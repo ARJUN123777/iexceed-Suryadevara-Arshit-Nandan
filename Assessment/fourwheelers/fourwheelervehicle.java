@@ -16,15 +16,15 @@ public class fourwheelervehicle
         this.type=type;
         if(this.type==1)
         {
-           new cars().display();
+           new cars();
         }
         else if(this.type==2)
         {
-            new van().display();
+            new van();
         }
         else if(this.type==3)
         {
-            new truck().display();
+            new truck();
         }
         else
         {

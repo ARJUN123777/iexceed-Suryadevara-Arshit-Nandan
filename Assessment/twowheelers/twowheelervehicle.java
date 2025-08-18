@@ -12,7 +12,6 @@ public class twowheelervehicle
         System.out.println("TYPE 2---CYCLE");
         System.out.print("Your choice: ");
         this.type=sc.nextInt();
-      
         if(this.type==1)
         {
            new motorbike();

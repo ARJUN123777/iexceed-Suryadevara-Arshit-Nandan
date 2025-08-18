@@ -1,6 +1,7 @@
 package twowheelers;
-import java.io.DataOutputStream;
-import java.io.FileOutputStream;
+import java.io.*;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 public class motorbike
 {
    public static int i=0;   //Static is used to make random value to be constant
@@ -13,14 +14,16 @@ public class motorbike
       }
       try
       {
-      DataOutputStream fout=new DataOutputStream(new FileOutputStream("D:\\OneDrive\\Desktop\\Lot B.txt",true));
+      FileWriter fout=new FileWriter("C:\\Users\\arshit.nandan\\Desktop\\LOT B.txt",true);
       i++;   
-      this.t="MB"+String.valueOf(i); 
-      fout.writeUTF(this.t);
+      LocalTime tin=LocalTime.now();  
+      DateTimeFormatter format=DateTimeFormatter.ofPattern("HH:mm:ss"); 
+      String intime=tin.format(format);
+      this.t="MB"+i; 
+      fout.write(this.t+","+intime+"\n");
       fout.close();
       display();
       }catch(Exception e){};
-
 
     }
    public void display()

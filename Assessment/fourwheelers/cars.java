@@ -1,10 +1,13 @@
 package fourwheelers;
 import java.io.*;
 import java.lang.*;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 public class cars 
 {
   public static int i=0;   //Static is used to make random value to be constant
   public String t;
+  
   public cars()
     {
       if(i>20)  //20 Refers to no of lots in Car Parking Area
@@ -13,15 +16,16 @@ public class cars
       }
       try
       {
-      DataOutputStream fout=new DataOutputStream(new FileOutputStream("D:\\OneDrive\\Desktop\\Lot C.txt",true));
-      i++;   
-      this.t="CR"+String.valueOf(i); 
-      fout.writeUTF(this.t);
+      FileWriter fout=new FileWriter("C:\\Users\\arshit.nandan\\Desktop\\LOT C.txt",true);
+      i++;
+      LocalTime tin=LocalTime.now();  
+      DateTimeFormatter format=DateTimeFormatter.ofPattern("HH:mm:ss"); 
+      String intime=tin.format(format);
+      this.t="CR"+i; 
+      fout.write(this.t+","+intime+"\n");
       fout.close();
       display();
       }catch(Exception e){};
-
-
     }
    public void display()
    {

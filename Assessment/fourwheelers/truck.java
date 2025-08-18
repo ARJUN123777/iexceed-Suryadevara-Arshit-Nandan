@@ -1,9 +1,10 @@
 package fourwheelers;
-import java.io.DataOutputStream;
-import java.io.FileOutputStream;
+import java.io.*;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 public class truck
 {
-    public static int i=0;   //Static is used to make random value to be constant
+  public static int i=0;   //Static is used to make random value to be constant
   public String t;
   public truck()
     {
@@ -13,10 +14,13 @@ public class truck
       }
       try
       {
-      DataOutputStream fout=new DataOutputStream(new FileOutputStream("D:\\OneDrive\\Desktop\\Lot E.txt",true));
+      FileWriter fout=new FileWriter("C:\\Users\\arshit.nandan\\Desktop\\LOT E.txt",true);
       i++;   
-      this.t="TR"+String.valueOf(i); 
-      fout.writeUTF(this.t);
+      LocalTime tin=LocalTime.now();  
+      DateTimeFormatter format=DateTimeFormatter.ofPattern("HH:mm:ss"); 
+      String intime=tin.format(format);
+      this.t="TR"+i; 
+      fout.write(this.t+","+intime+"\n");
       fout.close();
       display();
       }catch(Exception e){};

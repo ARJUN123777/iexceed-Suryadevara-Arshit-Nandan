@@ -1,6 +1,6 @@
 package fare;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
 import twowheelers.*;
 //Dependecy Inversion Principle
 interface parkingfare     //Functional Interface takes only one method
@@ -9,21 +9,34 @@ interface parkingfare     //Functional Interface takes only one method
 }
 public class mbfare implements parkingfare
 {
-    public static LocalTime tout=LocalTime.now();
-    Duration d=Duration.between(motorbike.tin,tout);
-    long hours=d.toHours();
-    DateTimeFormatter formatter=DateTimeFormatter.ofPattern("HH:mm:ss");
+   public mbfare(String st1)
+    {
+        boolean found=false;
+        try
+        {
+        DataInputStream fin=new DataInputStream(new FileInputStream("D:\\OneDrive\\Desktop\\Lot B.txt"));
+        while(fin.available()>0)
+        {
+            String ticket=fin.readUTF();
+            if(ticket.equals(st1))
+            {
+                System.out.println("Your Vehicle is Parked in FLOOR B,LOT "+(ticket).substring(2));
+                fare();
+                found=true;
+                motorbike.vehicleleft();
+                break;
+            }
+        }
+        }catch(Exception e){};
+        if(!found)
+        {
+            System.out.println("Vehicle Not found");
+        }
+    }
+
     public void fare()
     {
-        System.out.println("Vehicle Time In-"+(String)(motorbike.tin).format(formatter));
-        System.out.println("Vehicle Time out-"+(String)(this.tout).format(formatter)); 
-        if(this.hours<3)
-        {
-        System.out.println("The Parking Fare for your Motor Cycle --- 100Rs");
-        }
-        else
-        {
-            System.out.println("The Parking Fare for your Motor Cycle --- 150Rs");
-        }
+        System.out.println("The Parking Fare for your Bike --- 150Rs");
+        
     }
 }

@@ -1,24 +1,37 @@
 package fare;
 import fourwheelers.*;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
 public class tfare implements parkingfare
 {
-     public static LocalTime tout=LocalTime.now();
-    Duration d=Duration.between(truck.tin,tout);
-    long hours=d.toHours();
-    DateTimeFormatter formatter=DateTimeFormatter.ofPattern("HH:mm:ss");
+    public tfare(String st1)
+    {
+        boolean found=false;
+        try
+        {
+        DataInputStream fin=new DataInputStream(new FileInputStream("D:\\OneDrive\\Desktop\\Lot E.txt"));
+        while(fin.available()>0)
+        {
+            String ticket=fin.readUTF();
+            if(ticket.equals(st1))
+            {
+                System.out.println("Your Vehicle is Parked in FLOOR A,LOT "+(ticket).substring(2));
+                fare();
+                found=true;
+                truck.vehicleleft();
+                break;
+            }
+        }
+        }catch(Exception e){};
+        if(!found)
+        {
+            System.out.println("Vehicle Not found");
+        }
+    }
+
     public void fare()
     {
-        System.out.println("Vehicle Time In-"+(String)((truck.tin).format(formatter)));
-        System.out.println("Vehicle Time out-"+(String)((this.tout).format(formatter))); 
-        if(this.hours<3)
-        {
-        System.out.println("The Parking Fare for your Truck--- 250Rs");
-        }
-        else
-        {
-            System.out.println("The Parking Fare for your Truck --- 250Rs");
-        }
+        System.out.println("The Parking Fare for your Truck --- 300Rs");
+        
     }
 }

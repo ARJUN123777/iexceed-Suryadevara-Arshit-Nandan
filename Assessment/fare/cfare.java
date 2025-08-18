@@ -1,24 +1,37 @@
 package fare;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
 import twowheelers.*;
 public class cfare implements parkingfare
 {
-     public static LocalTime tout=LocalTime.now();
-    Duration d=Duration.between(cycle.tin,tout);
-    long hours=d.toHours();
-    DateTimeFormatter formatter=DateTimeFormatter.ofPattern("HH:mm:ss");
+     public cfare(String st1)
+    {
+        boolean found=false;
+        try
+        {
+        DataInputStream fin=new DataInputStream(new FileInputStream("D:\\OneDrive\\Desktop\\Lot A.txt"));
+        while(fin.available()>0)
+        {
+            String ticket=fin.readUTF();
+            if(ticket.equals(st1))
+            {
+                System.out.println("Your Vehicle is Parked in FLOOR A,LOT "+(ticket).substring(2));
+                fare();
+                found=true;
+                cycle.vehicleleft();
+                break;
+            }
+        }
+        }catch(Exception e){};
+        if(!found)
+        {
+            System.out.println("Vehicle Not found");
+        }
+    }
+
     public void fare()
     {
-        System.out.println("Vehicle Time In-"+(String)((cycle.tin).format(formatter)));
-        System.out.println("Vehicle Time out-"+(String)((this.tout).format(formatter))); 
-        if(this.hours<3)
-        {
-        System.out.println("The Parking Fare for your Cycle --- 50Rs");
-        }
-        else
-        {
-            System.out.println("The Parking Fare for your Cycle --- 100Rs");
-        }
+        System.out.println("The Parking Fare for your Cycle --- 100Rs");
+        
     }
 }

@@ -11,25 +11,24 @@ public class searchvehicle
     }
     public void find(String st1)
     {
-        this.st1=st1;
+       this.st1=st1;
        if((this.st1).contains("MB"))  
        {
            new mbfare(this.st1);
+       }
+       else if((this.st1).contains("CR"))
+       {
+        new crfare(this.st1);
        }
        else if((this.st1).contains("C"))
        {
            new cfare(this.st1);
        }
-       else if((this.st1).contains("CR"))
-       {
-        new crfare(this.st1);
-
-       }
        else if((this.st1).contains("V"))
        {
            new vfare(this.st1);
        }
-       else if((this.st1).contains("CR"))
+       else if((this.st1).contains("TR"))
        {
            new tfare(this.st1);
        }

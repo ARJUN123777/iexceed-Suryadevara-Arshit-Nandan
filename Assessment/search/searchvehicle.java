@@ -1,12 +1,9 @@
 package search;
 import fare.*;
-import fourwheelers.*;
-import twowheelers.*;
 public class searchvehicle
 {
     public String st1;
     String ticketNo;
-    cars cr;
     public searchvehicle(String ticketNo)
     {
         this.ticketNo=ticketNo;
@@ -15,30 +12,26 @@ public class searchvehicle
     public void find(String st1)
     {
         this.st1=st1;
-       if((this.st1).equals(new motorbike().t))  
+       if((this.st1).contains("MB"))  
        {
-           System.out.println("Your Vehicle is Parked in TIER B,LOT "+new motorbike().t.substring(2));
-           new mbfare().fare();
+           new mbfare(this.st1);
        }
-       else if((this.st1).equals(new cycle().t))
+       else if((this.st1).contains("C"))
        {
-        System.out.println("Your Vehicle is Parked in FLOOR A,LOT "+new cycle().t.substring(2));
-           new cfare().fare();
+           new cfare(this.st1);
        }
        else if((this.st1).contains("CR"))
        {
         new crfare(this.st1);
 
        }
-       else if((this.st1).equals(new van().t))
+       else if((this.st1).contains("V"))
        {
-        System.out.println("Your Vehicle is Parked in FLOOR D,LOT "+new van().t.substring(1));
-           new vfare().fare();
+           new vfare(this.st1);
        }
-       else if((this.st1).equals(new truck().t))
+       else if((this.st1).contains("CR"))
        {
-        System.out.println("Your Vehicle is Parked in FLOOR E,LOT "+new truck().t.substring(1));
-           new tfare().fare();
+           new tfare(this.st1);
        }
        else
        {

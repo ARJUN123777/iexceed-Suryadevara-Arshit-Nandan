@@ -5,18 +5,16 @@ import twowheelers.*;
 class vehicle
 {
     int type;
-    twowheelervehicle t;
-    fourwheelervehicle f;
     public vehicle(int type)
     {
         this.type = type;
         if(this.type == 1)
         {
-            t=new twowheelervehicle();     //Calling a Method from another class present in another package
+            new twowheelervehicle();     //Calling a Method from another class present in another package
         }
         else
         {
-           f= new fourwheelervehicle();  //Calling a method from another class present in another package
+           new fourwheelervehicle();  //Calling a method from another class present in another package
         }
     }
 }

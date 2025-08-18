@@ -15,11 +15,11 @@ public class twowheelervehicle
       
         if(this.type==1)
         {
-           new motorbike().display();
+           new motorbike();
         }
         else if(this.type==2)
         {
-          new cycle().display();
+          new cycle();
         }
     }
 }

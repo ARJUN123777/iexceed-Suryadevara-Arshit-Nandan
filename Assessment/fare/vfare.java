@@ -1,7 +1,8 @@
 package fare;
 import fourwheelers.*;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
+import java.io.*;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 public class vfare implements parkingfare
 {
     public vfare(String st1)
@@ -9,20 +10,29 @@ public class vfare implements parkingfare
         boolean found=false;
         try
         {
-        DataInputStream fin=new DataInputStream(new FileInputStream("D:\\OneDrive\\Desktop\\Lot D.txt"));
-        while(fin.available()>0)
+        BufferedReader fin=new BufferedReader(new FileReader("C:\\Users\\arshit.nandan\\Desktop\\LOT D.txt"));
+        String ticket;
+        while((ticket=fin.readLine())!=null)
         {
-            String ticket=fin.readUTF();
-            if(ticket.equals(st1))
+            ticket=ticket.trim();
+            String parts[]=ticket.split(",");
+            if(parts[0].equalsIgnoreCase(st1))
             {
-                System.out.println("Your Vehicle is Parked in FLOOR D,LOT "+(ticket).substring(2));
+                System.out.println("Your Vehicle is Parked in FLOOR D,LOT "+st1.substring(2));
+                LocalTime tout=LocalTime.now();  
+                DateTimeFormatter format=DateTimeFormatter.ofPattern("HH:mm:ss"); 
+                String outtime=tout.format(format);
+                System.out.print("Vehicle In-time:"+parts[1]);
+                System.out.println(" Vehicle Out-time:"+outtime);
                 fare();
                 found=true;
                 van.vehicleleft();
                 break;
             }
         }
-        }catch(Exception e){};
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         if(!found)
         {
             System.out.println("Vehicle Not found");

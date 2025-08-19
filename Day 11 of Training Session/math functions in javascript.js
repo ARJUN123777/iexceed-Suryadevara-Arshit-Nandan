@@ -1,0 +1,17 @@
+console.log(Math.floor(0.5000312));
+console.log(Math.ceil(-172.50));
+console.log(Math.min(45,-45,294,20,2433.30,-45.13));
+console.log(Math.max(345,243,345.02,319,-495.23,0));
+console.log(Math.sqrt(4593.434));
+console.log(Math.pow(4593023424,348));
+console.log(Math.trunc(-674667.343));
+console.log(Math.sign(-23482));
+console.log(Math.round(-494.5492831));
+console.log(Math.PI);
+degree=45;
+radians=degree*(Math.PI/180);
+console.log(Math.sin(radians));
+console.log(Math.cos(radians));
+console.log(Math.tan(radians));
+console.log(Math.abs(-340293.345935));
+console.log(Math.log(293013.231223));

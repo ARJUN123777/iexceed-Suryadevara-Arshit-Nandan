@@ -1,0 +1,18 @@
+let x="Hello";
+x='h';
+console.log(x);
+//hoisting can done using var
+console.log(x1);   //x1 is still undefined so the output is undefined 
+var x1="Nidhi Reddy";
+console.log(x1);
+console.log(typeof(x1));
+x1=23;
+console.log(x1);  //Value of x1 is changed to 23
+console.log(typeof(x1))    //It displays the data type of x1
+delete x;
+console.log(x);
+//hoisting can not be done using let
+console.log("the value of x3 before assigning the value is: ",x3);
+let x3="knowledge Transfer";
+console.log(x3);
+

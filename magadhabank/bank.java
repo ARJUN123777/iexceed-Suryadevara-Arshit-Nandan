@@ -1,9 +1,7 @@
-//Program to execute the operations carried out in the bank
 package magadhabank;
-import java.util.Scanner;
 import counter1.*;
 import counter2.*;
-import java.util.*;
+import java.util.Scanner;
 public class bank
 {
     public static void main(String args[])
@@ -12,18 +10,18 @@ public class bank
       int option;
       while(true)
       {
-        System.out.println("==========================================================================================");
-        System.out.println("\t\tWECLOME TO MAGADHA BANK");
-        System.out.println("\t\tHOW CAN WE HELP YOU?");
-        System.out.println("\t\t1.CREATE AN ACCOUNT");
-        System.out.println("\t\t2.DEPOSIT MONEY INTO YOUR ACCOUNT");
-        System.out.println("\t\t3.LOAN");
-        System.out.println("\t\t4.Exit");
-        System.out.print("\t\tPLEASE SELECT YOUR CHOICE: ");
+        System.out.println("\t\t===============================================================");
+        System.out.println("\t\t\t\tWECLOME TO MAGADHA BANK");
+        System.out.println("\t\t\t\tHOW CAN WE HELP YOU?");
+        System.out.println("\t\t\t\t1.CREATE AN ACCOUNT");
+        System.out.println("\t\t\t\t2.DEPOSIT");
+        System.out.println("\t\t\t\t3.LOAN");
+        System.out.println("\t\t\t\t4.Exit");
+        System.out.print("\t\t\t\tPLEASE SELECT YOUR CHOICE: ");
         option=sc.nextInt();
         if(option==1)
         {
-            System.out.println("\t\tFOR ACCOUNT CREATION PLEASE GO TO COUNTER 1");
+            System.out.println("\t\t\tFOR ACCOUNT CREATION PLEASE GO TO COUNTER 1");
             new create();
         }
         else if(option==2)
@@ -33,17 +31,18 @@ public class bank
         }
         else if(option==3)
         {
-            System.out.println("\t\tFOR LOAN PLEASE GO TO COUNTER 3");
+            System.out.println("\t\t\tFOR LOAN PLEASE GO TO COUNTER 3");
             //counter3();
         }
         else if(option==4)
         {
-            System.out.println("==========================================================================================");
-            System.out.println("\t\tTHANK YOU FOR BANKING WITH US,PLEASE VISIT AGAIN");
+            System.out.println("\t\t===============================================================");
+            System.out.println("\t\t\tTHANK YOU FOR BANKING WITH US,PLEASE VISIT AGAIN");
+            return;
         }
         else
         {
-            System.out.println("PLEASE SELECT A VALID OPTION!!");
+            System.out.println("\t\t\t\tPLEASE SELECT A VALID OPTION!!");
         }
       }
     }

@@ -8,67 +8,73 @@ public class create
 Scanner sc = new Scanner(System.in);
     double balance = 0.0;
     String username, pwd;
-    int loan = 0;
     String st, aadhar, address;
     int age;
     public create()
     {
-        System.out.println("==========================================================================================");
-        System.out.println("\n\nWELCOME TO COUNTER 1");
-        System.out.println("PLEASE FILL THE DETAILS TO CREATE A BANK ACCOUNT");
-        System.out.print("YOUR NAME: ");
+        System.out.println("\t\t====================================================================");
+        System.out.println("\t\t\t\tWELCOME TO COUNTER 1");
+        System.out.println("\n\t\tPLEASE FILL THE DETAILS TO CREATE A BANK ACCOUNT");
+        System.out.print("\t\t\tYOUR NAME: ");
         this.st = sc.nextLine();
-        System.out.print("Your AGE: ");
+        System.out.print("\t\t\tYour AGE: ");
         this.age = sc.nextInt();
         sc.nextLine(); // Consume the newline character
         if (this.age < 18)
         {
-            System.out.println("YOU ARE NOT ELIGIBLE TO CREATE A BANK ACCOUNT");
+            System.out.println("\t\t\t\tYOU ARE NOT ELIGIBLE TO CREATE A BANK ACCOUNT");
         }
         else
         {
             while (true)
             {
-               System.out.println("YOUR AADHAR NO: ");
+               System.out.print("\t\t\tYOUR AADHAR NO: ");
                this.aadhar = sc.nextLine();
             if (this.aadhar.length() != 12 || (!this.aadhar.matches("\\d{12}")))
             {
-                System.out.println("PLEASE ENTER A VALID 12 DIGIT  AADHAR NO");
+                System.out.println("\t\t\tPLEASE ENTER A VALID 12 DIGIT  AADHAR NO");
             }
             else
             {
                 break;
             }
             }
-                System.out.print("Enter your Address: ");
+                System.out.print("\t\t\tENTER YOUR ADDRESS: ");
                 this.address = sc.nextLine();
                 this.username = this.aadhar.substring(this.aadhar.length() - 6);
-                System.out.println("YOUR USERNAME: "+this.username);
-                System.out.println("SET YOUR PASSWORD: ");
+                System.out.println("\t\t\tYOUR USERNAME(last 6 digits of your AADHAR number): "+this.username);
+                System.out.print("\t\t\tSET YOUR PASSWORD: ");
                 this.pwd = sc.nextLine();
-                createaccount();
+                try{
+                       createaccount();
+                }catch(Exception e){
+                System.out.println("\t\t\tERROR WHILE CREATING ACCOUNT.");
+                 e.printStackTrace();
+                } 
         }
     }
     public void createaccount() throws Exception
     {
         try {
             File file = new File(username + ".txt");
-            FileOutputStream fos = new FileOutputStream(file);
-            String data = "NAME: " + st + "\n" +
-                          "AADHAR NO: " + aadhar + "\n" +
-                          "AGE: " + age + "\n" +
-                          "Address: " + address + "\n" +
-                          "Balance: " + balance + "\n" +
-                          "Loan: " + loan + "\n" +
-                          "Password: " + pwd + "\n";
+        if (file.exists()) 
+        {
+            System.out.println("\t\t\tACCOUNT ALREADY EXISTS FOR USER " + username);
+            return;
+        } 
+            FileOutputStream fos = new FileOutputStream(file,false);
+            String data = "\t\tNAME: " + st + "\n" +
+                          "\t\tAADHAR NO: " + aadhar + "\n" +
+                          "\t\tAGE: " + age + "\n" +
+                          "\t\tADDRESS: " + address + "\n" +
+                          "\t\tBALANCE: " + balance + "\n" ;
             byte[] encryptedData = encrypt(data, pwd);
             fos.write(encryptedData);
             fos.close();
-            System.out.println("ACCOUNT CREATED SUCCESSFULLY FOR USER " + username);
-            System.out.println("YOU CAN LOGIN USING YOUR USERNAME AND PASSWORD");
+            System.out.println("\t\t\tYOU CAN LOGIN USING YOUR USERNAME AND PASSWORD");
         } catch (IOException e)
         {
-            System.out.println("ERROR WHILE CREATING ACCOUNT FILE.");
+            System.out.println("\t\t\tERROR WHILE CREATING ACCOUNT FILE.");
             e.printStackTrace();
         }
     }

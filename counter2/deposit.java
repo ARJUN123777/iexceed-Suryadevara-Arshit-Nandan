@@ -9,84 +9,87 @@ public class deposit
     public deposit() 
     {
         try {
-            System.out.println("==========================================================================================");
-            System.out.println("\t\tWELCOME TO COUNTER 2");
+            System.out.println("\t\t================================================================");
+            System.out.println("\t\t\t\tWELCOME TO COUNTER 2");
             System.out.println("\t\tFOR DEPOSIT AND WITHDRAWAL PLEASE LOGIN INTO YOUR ACCOUNT");
-            System.out.print("\t\tUsername: ");
-            this.username = sc.nextLine();
-            System.out.print("\t\tPassword: ");
-            this.pass = sc.nextLine();
-            File file = new File(username + ".txt");
-            if (!file.exists()) 
-            {
-                System.out.println("\t\tUSER NOT FOUND");
+            while (true)  
+            {       // keep asking until correct login
+                        System.out.print("\t\t\tUsername: ");
+                        this.username = sc.nextLine();
+                        System.out.print("\t\t\tPassword: ");
+                        this.pass = sc.nextLine();
+
+                       File file = new File(username + ".txt");
+               if (!file.exists()) {
+                System.out.println("\t\t\t\tUSER NOT FOUND");
                 return;
-            }
-            // Read encrypted data from file
-            byte[] encryptedData = new byte[(int) file.length()];
-            FileInputStream fis = new FileInputStream(file);
-            fis.read(encryptedData);
-            fis.close();
-            try {
+                }
+                // Read encrypted data from file
+                byte[] encryptedData = new byte[(int) file.length()];
+                FileInputStream fis = new FileInputStream(file);
+                fis.read(encryptedData);
+                fis.close();
+             try {
                 // Decrypt account data using password
                 String decryptedData = create.decrypt(encryptedData, pass);
-                System.out.println("\n\t\tLOGIN SUCCESSFUL.\n\t\tACCOUNT DETAILS");
-                System.out.println("\t\t" + decryptedData);
-                // Parse balance from decrypted text
+                System.out.println("\t\t******************************************************");
+                System.out.println("\t\t\t\tACCOUNT DETAILS");
                 String[] lines = decryptedData.split("\n");
                 double balance = 0.0;
+                // Print account details and extract balance
                 for (String line : lines) {
-                    if (line.startsWith("Balance:")) {
+                    System.out.println(line);
+                    if (line.trim().startsWith("BALANCE:")) {
                         balance = Double.parseDouble(line.split(":")[1].trim());
                     }
                 }
                 // Deposit or Withdraw
-                System.out.println("\t\tPLEASE SELECT ANY ONE OPTION");
-                System.out.println("\n\t\t1. DEPOSIT\n\t\t2. WITHDRAW\n\t\tYOUR CHOICE:");
-                int choice = sc.nextInt();
-                System.out.println("\t\tENTER AMOUNT: ");
-                double amt = sc.nextDouble();
-                if (choice == 1) 
+                System.out.print("\n\t\t\tDO YOU WANT TO DEPOSIT OR WITHDRAW- ");
+                String choice = sc.nextLine();
+                if (choice.toLowerCase().equals("deposit")) 
                 {
+                     System.out.print("\t\t\tENTER AMOUNT TO DEPOSIT: ");
+                    double amt = sc.nextDouble();
                     balance += amt;
-                    System.out.println("\t\tDEPOSIT SUCCESSFUL");
-                } 
-                else if (choice == 2) 
+                    System.out.println("\n\t\t\t\tDEPOSIT SUCCESSFUL");
+                } else if (choice.toLowerCase().equals("withdraw")) 
                 {
-                    if (amt > balance) 
-                    {
-                        System.out.println("\t\tINSUFFICIENT BALANCE!");
+                    System.out.print("\t\t\tENTER AMOUNT TO WITHDRAW: ");
+                    double amt = sc.nextDouble();
+                    if (amt > balance) {
+                        System.out.println("\t\t\t\tINSUFFICIENT BALANCE!");
                         return;
                     }
                     balance -= amt;
-                    System.out.println("\t\tWITHDRAWAL SUCCESSFUL");
-                } else 
-                {
-                    System.out.println("\t\tINVALID CHOICE!");
+                    System.out.println("\n\t\t\t\tWITHDRAWAL SUCCESSFUL");
+                } else {
+                    System.out.println("\t\t\tINVALID CHOICE!");
                     return;
                 }
                 // Update Balance line
-                for (int i = 0; i < lines.length; i++) 
-                {
-                    if (lines[i].startsWith("Balance:")) 
-                    {
-                        lines[i] = "Balance: " + balance;
+                for (int i = 0; i < lines.length; i++) {
+                    if (lines[i].trim().startsWith("BALANCE")) {
+                        lines[i] = "\t\tBALANCE: " + balance;
                     }
                 }
-                // Rejoin lines and encrypt
+                // Rejoin lines and encrypt again
                 String updatedData = String.join("\n", lines);
                 byte[] updatedEncrypted = create.encrypt(updatedData, pass);
                 // Save back to file
                 FileOutputStream fos = new FileOutputStream(file);
                 fos.write(updatedEncrypted);
                 fos.close();
-                System.out.println("UPDATED ACCOUNT DETAILS.");
-            } catch (Exception e) 
-            {
-                System.out.println("INCORRECT PASSWORD!!");
+                // Show updated account details
+                System.out.println("\t\t******************************************************");
+                System.out.println("\t\t\t\tUPDATED ACCOUNT DETAILS");
+                System.out.println(updatedData);
+                break;
+             } catch (Exception e) {
+                System.out.println("\t\t\tINCORRECT PASSWORD!");
             }
+        }
         } catch (Exception e) {
-            System.out.println("ERROR DURING LOGIN.");
+            System.out.println("\t\t\t\tERROR DURING LOGIN.");
             e.printStackTrace();
         }
     }

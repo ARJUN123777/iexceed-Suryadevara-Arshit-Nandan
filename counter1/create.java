@@ -12,7 +12,7 @@ Scanner sc = new Scanner(System.in);
     int age;
     public create()
     {
-        System.out.println("\t\t====================================================================");
+        System.out.println("\t\t=============================================================");
         System.out.println("\t\t\t\tWELCOME TO COUNTER 1");
         System.out.println("\n\t\tPLEASE FILL THE DETAILS TO CREATE A BANK ACCOUNT");
         System.out.print("\t\t\tYOUR NAME: ");

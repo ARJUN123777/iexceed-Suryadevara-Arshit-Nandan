@@ -9,7 +9,7 @@ public class deposit
     public deposit() 
     {
         try {
-            System.out.println("\t\t=============================================================");
+            System.out.println("\t\t======================================================");
             System.out.println("\t\t\t\tWELCOME TO COUNTER 2");
             System.out.println("\t\tFOR DEPOSIT AND WITHDRAWAL PLEASE LOGIN INTO YOUR ACCOUNT");
             while (true)  
@@ -44,31 +44,37 @@ public class deposit
                     }
                 }
                 // Deposit or Withdraw
+                String choice="";
+                while (true) 
+                {    
                 System.out.print("\n\t\t\tDO YOU WANT TO DEPOSIT OR WITHDRAW- ");
-                String choice = sc.nextLine();
+                choice = sc.nextLine();
                 if (choice.toLowerCase().equals("deposit")) 
                 {
-                    System.out.print("\t\t\tENTER AMOUNT TO DEPOSIT: ");
+                    System.out.print("\t\t\tENTER THE AMOUNT TO DEPOSIT: ");
                     double amt = sc.nextDouble();
                     sc.nextLine();
                     balance += amt;
                     System.out.println("\n\t\t\t\tDEPOSIT SUCCESSFUL");
+                    break;
                 } else if (choice.toLowerCase().equals("withdraw")) 
                 {
-                    System.out.print("\t\t\tENTER AMOUNT TO WITHDRAW: ");
+                    System.out.print("\t\t\tENTER THE AMOUNT TO WITHDRAW: ");
                     double amt = sc.nextDouble();
                     if (amt > balance) {
                         System.out.println("\t\t\t\tINSUFFICIENT BALANCE!");
-                        return;
+                        break;
                     }
                     balance -= amt;
                     System.out.println("\n\t\t\t\tWITHDRAWAL SUCCESSFUL");
+                    break;
                 } else {
-                    System.out.println("\t\t\tINVALID CHOICE!");
-                    return;
+                    System.out.println("\t\t\tPLEASE TYPE DEPOSIT OR WITHDRAW!");
+
                 }
+            }
                 // Update Balance line
-                for (int i = 0; i < lines.length; i++) {
+                for(int i = 0; i < lines.length; i++) {
                     if (lines[i].trim().startsWith("BALANCE")) {
                         lines[i] = "\t\tBALANCE: " + balance;
                     }

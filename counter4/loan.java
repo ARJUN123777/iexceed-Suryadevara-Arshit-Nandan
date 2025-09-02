@@ -1,12 +1,12 @@
 package counter4;
 import counter1.*;
-import counter2.*;
 import java.io.*;
 import java.util.*;
 public class loan {
     Scanner sc = new Scanner(System.in);
     String username, pass;
-    public loan() {
+    public loan() 
+    {
         try {
             System.out.println("\t\t=======================================================");
             System.out.println("\t\t\tWELCOME TO COUNTER 4 - LOAN SERVICES");
@@ -33,12 +33,12 @@ public class loan {
                     showReminder(loans);
                     while (true) {
                         System.out.println("\n\t\t================ LOAN MENU ================");
-                        System.out.println("\t\t1. Take Loan");
-                        System.out.println("\t\t2. Pay Interest");
-                        System.out.println("\t\t3. Clear Loan");
-                        System.out.println("\t\t4. Your Loans");
-                        System.out.println("\t\t5. Exit");
-                        System.out.print("\t\tEnter choice: ");
+                        System.out.println("\t\t1. TAKE LOAN");
+                        System.out.println("\t\t2. PAY INTEREST");
+                        System.out.println("\t\t3. CLEAR LOAN");
+                        System.out.println("\t\t4. VIEW YOUR LOANS");
+                        System.out.println("\t\t5. EXIT");
+                        System.out.print("\t\tYOUR CHOICE: ");
                         int choice = sc.nextInt();
                         sc.nextLine();
 
@@ -47,8 +47,8 @@ public class loan {
                                 LoanItem newLoan = takeLoan(balance);
                                 balance += newLoan.amount;
                                 loans.add(newLoan);
-                                System.out.println("\t\tLoan of ₹" + newLoan.amount + " granted successfully!");
-                                System.out.println("\t\tUpdated Balance: " + balance);
+                                System.out.println("\t\tLOAN OF ₹" + newLoan.amount + " GRANTED SUCCESSFULLY!");
+                                System.out.println("\t\tUPDATED SUCCESSFULLY: " + balance);
                             }
                             case 2 -> { // Pay Interest
                                 payInterest(balance, loans);
@@ -60,10 +60,10 @@ public class loan {
                             case 4 -> showLoans(loans);
                             case 5 -> {
                                 saveAccount(file, balance, loans);
-                                System.out.println("\t\tExiting Loan Services...");
+                                System.out.println("\t\tEXITING LOAN SERVICES...");
                                 return;
                             }
-                            default -> System.out.println("\t\tInvalid Choice, Try Again!");
+                            default -> System.out.println("\t\tINVALID CHOICE, TRY AGAIN!");
                         }
                         saveAccount(file, balance, loans);
                     }
@@ -96,7 +96,7 @@ public class loan {
             if (line.startsWith("LOAN AMOUNT:")) {
                 double amt = Double.parseDouble(line.split(":")[1].trim());
                 temp = new LoanItem(amt, 12.0, "", ""); // default 12%
-            } else if (line.startsWith("LOAN DATE:") && temp != null) {
+            } else if (line.startsWith("LOAN ISSUED DATE:") && temp != null) {
                 temp.loanDate = line.split(":")[1].trim();
             } else if (line.startsWith("LAST INTEREST PAID:") && temp != null) {
                 temp.lastPaidMonth = line.split(":")[1].trim();
@@ -124,11 +124,11 @@ public class loan {
                 break;
             }
         }
-        if (hasReminder) System.out.println("\t\tREMINDER: You must pay loan interest for this month!");
-        else if (!loans.isEmpty()) System.out.println("\t\tYou have already paid this month's interest");
+        if (hasReminder) System.out.println("\t\tREMINDER: YOU MUST PAY LOAN INTEREST FOR THIS MONTH!");
+        else if (!loans.isEmpty()) System.out.println("\t\tYOU HAVE ALREADY PAID THIS MONTH INTEREST");
     }
     private LoanItem takeLoan(double balance) {
-        System.out.print("\t\tEnter Loan Amount: ");
+        System.out.print("\t\tENTER LOAN AMOUNT: ");
         double amt = sc.nextDouble();
         sc.nextLine();
         String date = new java.text.SimpleDateFormat("dd-MM-yyyy").format(new Date());
@@ -137,86 +137,86 @@ public class loan {
     }
     private void payInterest(double balance, List<LoanItem> loans) {
         if (loans.isEmpty()) {
-            System.out.println("\t\tYou have no active loans!");
+            System.out.println("\t\tYOU HAVE ACTIVE LOANS!");
             return;
         }
-        System.out.println("\t\tSelect loan to pay interest:");
+        System.out.println("\t\tYOUR LOANS");
         for (int i = 0; i < loans.size(); i++) {
             LoanItem l = loans.get(i);
-            System.out.printf("\t\t%d. Loan ₹%.2f, Rate %.2f%%, Taken: %s%n", i + 1, l.amount, l.rate, l.loanDate);
+            System.out.printf("\t\t%d. LOAN ₹%.2f, RATE %.2f%%, ISSUED DATE: %s%n", i + 1, l.amount, l.rate, l.loanDate);
         }
-        System.out.print("\t\tEnter choice: ");
+        System.out.print("\t\tFOR WHICH LOAN YOU WANT TO PAY THE INTEREST ? ");
         int choice = sc.nextInt() - 1;
         sc.nextLine();
         if (choice < 0 || choice >= loans.size()) {
-            System.out.println("\t\tInvalid loan selection!");
+            System.out.println("\t\tINVALID LOAN SELECTION!");
             return;
         }
         LoanItem l = loans.get(choice);
         String thisMonth = new java.text.SimpleDateFormat("MM-yyyy").format(new Date());
         if (thisMonth.equals(l.lastPaidMonth)) {
-            System.out.println("\t\tYou already paid this month's interest for this loan!");
+            System.out.println("\t\tYOU ALREADY PAID THIS MONTH INTEREST FOR THIS LOAN!");
             return;
         }
         double interest = l.amount * (l.rate / 100) / 12;
-        System.out.println("\t\tMonthly interest of ₹" + interest + " is due for this loan.");
-        System.out.print("\t\tDo you want to pay it now? (yes/no): ");
+        System.out.println("\t\tMONTHLY INTEREST OF ₹" + interest + " iS DUE FOR THIS LOAN.");
+        System.out.print("\t\tDO YOU WANT TO PAY IT NOW? (yes/no): ");
         String ans = sc.nextLine();
         if (ans.equalsIgnoreCase("yes")) {
             l.lastPaidMonth = thisMonth;
-            System.out.println("\t\tInterest paid successfully!");
+            System.out.println("\t\tINTREST PAID SUCCESSFULLY!");
         } else {
-            System.out.println("\t\tPayment skipped. Reminder will appear next login.");
+            System.out.println("\t\tPLEASE PAY THE INTEREST .");
         }
     }
     private double clearLoan(double balance, List<LoanItem> loans) {
         if (loans.isEmpty()) {
-            System.out.println("\t\tNo active loans to clear!");
+            System.out.println("\t\tNO ACTIVE LOANS!");
             return balance;
         }
-        System.out.println("\t\tSelect loan to clear:");
+        System.out.println("\t\tYOUR LOANS");
         for (int i = 0; i < loans.size(); i++) {
             LoanItem l = loans.get(i);
-            System.out.printf("\t\t%d. Loan ₹%.2f, Rate %.2f%%, Taken: %s%n", i + 1, l.amount, l.rate, l.loanDate);
+            System.out.printf("\t\t%d. LOAN ₹%.2f, RATE %.2f%%, ISSUED DATE: %s%n", i + 1, l.amount, l.rate, l.loanDate);
         }
-        System.out.print("\t\tEnter choice: ");
+        System.out.print("\t\tWHICH LOAN YOU WANT TO CLEAR? ");
         int choice = sc.nextInt() - 1;
         sc.nextLine();
         if (choice < 0 || choice >= loans.size()) {
-            System.out.println("\t\tInvalid loan selection!");
+            System.out.println("\t\tINVALID LOAN SELECTION!");
             return balance;
         }
         LoanItem l = loans.get(choice);
         if (balance < l.amount) {
-            System.out.println("\t\tInsufficient balance to clear this loan!");
+            System.out.println("\t\tINSUFFICIENT BALANCE TO CLEAR THIS LOAN");
             return balance;
         }
         balance -= l.amount;
         loans.remove(choice);
-        System.out.println("\t\tLoan cleared successfully!");
-        System.out.println("\t\tUpdated Balance: " + balance);
+        System.out.println("\t\tLOAN CLEARED SUCCESSFULLY!");
+        System.out.println("\t\tUPDATED BALANCE: " + balance);
         return balance;
     }
     private void showLoans(List<LoanItem> loans) {
         if (loans.isEmpty()) {
-            System.out.println("\t\tYou have no active loans.");
+            System.out.println("\t\tYOU HAVE NO ACTIVE LOANS.");
             return;
         }
         System.out.println("\n\t\t================ YOUR LOAN STATUS ================");
         String thisMonth = new java.text.SimpleDateFormat("MM-yyyy").format(new Date());
         for (int i = 0; i < loans.size(); i++) {
             LoanItem l = loans.get(i);
-            System.out.printf("\t\tLoan %d: ₹%.2f, Rate %.2f%%, Taken: %s, Last Paid: %s%n",
+            System.out.printf("\t\tLOAN %d: ₹%.2f, RATE %.2f%%, ISSUED DATE: %s, LAST PAID INTEREST ON %s%n",
                     i + 1, l.amount, l.rate, l.loanDate, l.lastPaidMonth);
             if (l.lastPaidMonth == null || !l.lastPaidMonth.equals(thisMonth)) {
-                System.out.println("\t\tPending Status: Interest due for this month!");
+                System.out.println("\t\tPENDING STATUS: INTEREST DUE FOR THIS MONTH!");
             } else {
-                System.out.println("\t\tPending Status: No dues for this month ✅");
+                System.out.println("\t\tPENDING STATUS: NO DUES FOR THIS MONTH");
             }
             System.out.println("---------------------------------------------------");
         }
     }
-    private void saveAccount(File file, double balance, List<LoanItem> loans) throws IOException {
+    private void saveAccount(File file, double balance, List<LoanItem> loans) throws IOException, Exception {
         List<String> data = new ArrayList<>();
         data.add("BALANCE: " + balance);
         for (LoanItem l : loans) {

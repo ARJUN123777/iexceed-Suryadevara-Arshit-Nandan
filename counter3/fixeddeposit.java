@@ -33,10 +33,10 @@ public class fixeddeposit {
                     decryptedData = autoCreditInterest(file, decryptedData);
                     while (true) {
                         System.out.println("\n\t\t************** FIXED DEPOSIT MENU **************");
-                        System.out.println("\t\t1. Create New Fixed Deposit");
-                        System.out.println("\t\t2. View All Fixed Deposits");
-                        System.out.println("\t\t3. Exit");
-                        System.out.print("\t\tEnter choice: ");
+                        System.out.println("\t\t1. CREATE NEW FIXED DEPOSIT");
+                        System.out.println("\t\t2. VIEW YOUR FIXED DEPOSITS");
+                        System.out.println("\t\t3. EXIT");
+                        System.out.print("\t\tYOUR CHOICE: ");
                         int choice = sc.nextInt();
                         sc.nextLine(); // consume newline
                         if (choice == 1) {
@@ -45,10 +45,10 @@ public class fixeddeposit {
                         } else if (choice == 2) {
                             viewFDs(decryptedData);
                         } else if (choice == 3) {
-                            System.out.println("\t\tExiting FD Services...");
+                            System.out.println("\t\tEXITING FD SERVICES...");
                             return;
                         } else {
-                            System.out.println("\t\tInvalid Choice, Try Again!");
+                            System.out.println("\t\tINVALID CHOICE, TRY AGAIN!");
                         }
                     }
                 } catch (Exception e) {
@@ -108,7 +108,7 @@ public class fixeddeposit {
                     balance += interest;
                     credited = true;
                     updated.add("\t\tINTEREST CREDITED: ₹" + String.format("%.2f", interest) +
-                                " (" + monthsDiff + " months)");
+                                " (" + monthsDiff + " MONTHS)");
                     // Update LAST INTEREST CREDIT date to current date
                     String newLastCredit = "LAST INTEREST CREDIT: " + sdf.format(now);
                     if (lastCreditIndex != -1) {
@@ -131,7 +131,7 @@ public class fixeddeposit {
             FileOutputStream fos = new FileOutputStream(file);
             fos.write(updatedEncrypted);
             fos.close();
-            System.out.println("\n\t\tMonthly FD Interest Credited! Updated Balance: " + balance);
+            System.out.println("\n\t\tMONTHLY FD INTEREST CREDITED!\n\t\tUPDATED BALANCE: " + balance);
             return updatedData;
         }
         return decryptedData;
@@ -145,17 +145,17 @@ public class fixeddeposit {
                 balance = Double.parseDouble(line.split(":")[1].trim());
             }
         }
-        System.out.print("\n\t\tEnter FD Amount: ");
+        System.out.print("\n\t\tENTER FD AMOUNT: ");
         double fdAmount = sc.nextDouble();
         sc.nextLine();
         if (fdAmount > balance) {
             System.out.println("\t\tINSUFFICIENT BALANCE TO CREATE FD!");
             return;
         }
-        System.out.print("\t\tEnter FD Duration (in years): ");
+        System.out.print("\t\tENTER FD DURATION(IN YEARS): ");
         int years = sc.nextInt();
         sc.nextLine();
-        double rate = 6.5; // 6.5% interest
+        double rate = 10; // 10% interest
         double maturity = fdAmount * Math.pow(1 + (rate / 100), years);
         balance -= fdAmount;
         // Update account
@@ -188,7 +188,7 @@ public class fixeddeposit {
         generateBond(lines[0].split(":")[1].trim(), fdAmount, years, rate, maturity);
     }
     private void viewFDs(String decryptedData) {
-        System.out.println("\n\t\t**************** YOUR FIXED DEPOSITS ******************");
+        System.out.println("\n\t\t************** YOUR FIXED DEPOSITS **************");
         String[] lines = decryptedData.split("\n");
         boolean found = false;
         int fdCount = 1;

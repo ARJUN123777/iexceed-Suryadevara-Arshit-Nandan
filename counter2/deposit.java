@@ -9,7 +9,7 @@ public class deposit
     public deposit() 
     {
         try {
-            System.out.println("\t\t================================================================");
+            System.out.println("\t\t=============================================================");
             System.out.println("\t\t\t\tWELCOME TO COUNTER 2");
             System.out.println("\t\tFOR DEPOSIT AND WITHDRAWAL PLEASE LOGIN INTO YOUR ACCOUNT");
             while (true)  
@@ -22,7 +22,7 @@ public class deposit
                        File file = new File(username + ".txt");
                if (!file.exists()) {
                 System.out.println("\t\t\t\tUSER NOT FOUND");
-                return;
+                continue;
                 }
                 // Read encrypted data from file
                 byte[] encryptedData = new byte[(int) file.length()];
@@ -48,8 +48,9 @@ public class deposit
                 String choice = sc.nextLine();
                 if (choice.toLowerCase().equals("deposit")) 
                 {
-                     System.out.print("\t\t\tENTER AMOUNT TO DEPOSIT: ");
+                    System.out.print("\t\t\tENTER AMOUNT TO DEPOSIT: ");
                     double amt = sc.nextDouble();
+                    sc.nextLine();
                     balance += amt;
                     System.out.println("\n\t\t\t\tDEPOSIT SUCCESSFUL");
                 } else if (choice.toLowerCase().equals("withdraw")) 

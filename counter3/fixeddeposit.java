@@ -60,7 +60,7 @@ public class fixeddeposit {
             e.printStackTrace();
         }
     }
-    private String autoCreditInterest(File file, String decryptedData) throws Exception {
+    public String autoCreditInterest(File file, String decryptedData) throws Exception {
         String[] lines = decryptedData.split("\n");
         double balance = 0.0;
         List<String> updated = new ArrayList<>();
@@ -136,7 +136,7 @@ public class fixeddeposit {
         }
         return decryptedData;
     }
-    private void createFD(File file, String decryptedData) throws Exception {
+    public void createFD(File file, String decryptedData) throws Exception {
         String[] lines = decryptedData.split("\n");
         double balance = 0.0;
         // extract balance
@@ -187,7 +187,7 @@ public class fixeddeposit {
         // Generate bond
         generateBond(lines[0].split(":")[1].trim(), fdAmount, years, rate, maturity);
     }
-    private void viewFDs(String decryptedData) {
+    public void viewFDs(String decryptedData) {
         System.out.println("\n\t\t************** YOUR FIXED DEPOSITS **************");
         String[] lines = decryptedData.split("\n");
         boolean found = false;
@@ -213,14 +213,14 @@ public class fixeddeposit {
             System.out.println("\t\tNo Fixed Deposits found!");
         }
     }
-    private String reloadDecryptedData(File file) throws Exception {
+    public String reloadDecryptedData(File file) throws Exception {
         byte[] encryptedData = new byte[(int) file.length()];
         FileInputStream fis = new FileInputStream(file);
         fis.read(encryptedData);
         fis.close();
         return create.decrypt(encryptedData, pass);
     }
-    private void generateBond(String accountHolder, double fdAmount, int years, double rate, double maturity)
+    public void generateBond(String accountHolder, double fdAmount, int years, double rate, double maturity)
             throws IOException {
         String date = new java.text.SimpleDateFormat("dd-MM-yyyy").format(new java.util.Date());
         System.out.println("\n\t\t=============================================================");
@@ -237,7 +237,7 @@ public class fixeddeposit {
         System.out.println("             THANK YOU FOR TRUSTING MAGADHA BANK");
         System.out.println("=============================================================");
     }
-    private String aadharMasked(String username) {
+    public String aadharMasked(String username) {
         return "XXXXXX" + username;
     }
 }

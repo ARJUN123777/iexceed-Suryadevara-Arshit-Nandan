@@ -4,6 +4,8 @@ import counter2.*;
 import counter3.*;
 import counter4.*;
 import java.util.Scanner;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 public class bank
 {
     public static void main(String args[])
@@ -12,8 +14,13 @@ public class bank
       int option;
       while(true)
       {
-        System.out.println("\t============================================================================");
-        System.out.println("\t\t\t\tWECLOME TO MAGADHA BANK");
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String Date = now.format(dateFormatter);
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String time = now.format(timeFormatter);
+        System.out.println("\t=========================================================================");
+        System.out.println("\t"+Date+"\t\tWECLOME TO MAGADHA BANK\t\t\t"+time);
         System.out.println("\n\t\t\t\tHOW CAN WE HELP YOU?");
         System.out.println("\t\t\t\t1.CREATE AN ACCOUNT");
         System.out.println("\t\t\t\t2.DEPOSIT");

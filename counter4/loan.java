@@ -263,34 +263,35 @@ String username, pass;
     }
 }
    public void saveAccount(File file, double balance, List<LoanItem> loans) throws Exception {
-    // Decrypt old data to keep user details
+    // Decrypt old data fully
     byte[] encryptedData = new byte[(int) file.length()];
     FileInputStream fis = new FileInputStream(file);
     fis.read(encryptedData);
     fis.close();
     String decryptedData = create.decrypt(encryptedData, pass);
-    String name = "", aadhar = "", address = "";
-    int age = 0;
-    for (String line : decryptedData.split("\n")) {
-        line = line.trim();
-        if (line.contains("NAME:")) name = line.split(":", 2)[1].trim();
-        else if (line.contains("AADHAR NO:")) aadhar = line.split(":", 2)[1].trim();
-        else if (line.contains("AGE:")) age = Integer.parseInt(line.split(":", 2)[1].trim());
-        else if (line.contains("ADDRESS:")) address = line.split(":", 2)[1].trim();
+    List<String> lines = new ArrayList<>(Arrays.asList(decryptedData.split("\n")));
+    List<String> updated = new ArrayList<>();
+    // Update existing details
+    for (String line : lines) {
+        if (line.contains("BALANCE:")) {
+            updated.add("BALANCE: " + balance);
+        } 
+        else if (line.contains("LOAN AMOUNT:") || line.contains("LOAN ISSUED DATE:") || line.contains("LAST INTEREST PAID ON")) {
+            // skip old loan lines (we’ll rewrite them fresh below)
+            continue;
+        } 
+        else {
+            updated.add(line);
+        }
     }
-    // Rebuild file with full details + loan info
-    List<String> data = new ArrayList<>();
-    data.add("NAME: " + name);
-    data.add("AGE: " + age);
-    data.add("AADHAR NO: " + aadhar);
-    data.add("ADDRESS: " + address);
-    data.add("BALANCE: " + balance);
+    // Append updated loan details
     for (LoanItem l : loans) {
-        data.add("LOAN AMOUNT: " + l.amount);
-        data.add("LOAN ISSUED DATE: " + l.loanDate);
-        data.add("LAST INTEREST PAID ON " + l.lastPaidMonth);
+        updated.add("LOAN AMOUNT: " + l.amount);
+        updated.add("LOAN ISSUED DATE: " + l.loanDate);
+        updated.add("LAST INTEREST PAID ON: " + l.lastPaidMonth);
     }
-    String updatedData = String.join("\n", data);
+    // Encrypt again
+    String updatedData = String.join("\n", updated);
     byte[] encrypted = create.encrypt(updatedData, pass);
     FileOutputStream fos = new FileOutputStream(file);
     fos.write(encrypted);

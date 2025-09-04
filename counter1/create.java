@@ -55,11 +55,11 @@ public class create {
                 return;
             }
             FileOutputStream fos = new FileOutputStream(file, false);
-            String data = "\t\tNAME: " + st + "\n" +
-                    "\t\tAADHAR NO: " + aadhar + "\n" +
-                    "\t\tAGE: " + age + "\n" +
-                    "\t\tADDRESS: " + address + "\n" +
-                    "\t\tBALANCE: " + balance + "\n";
+            String data = "NAME: " + st + "\n" +
+                    "AADHAR NO: " + aadhar + "\n" +
+                    "AGE: " + age + "\n" +
+                    "ADDRESS: " + address + "\n" +
+                    "BALANCE: " + balance + "\n";
             byte[] encryptedData = encrypt(data, pwd);
             fos.write(encryptedData);
             fos.close();

@@ -2,15 +2,14 @@ package counter4;
 import counter1.*;
 import java.io.*;
 import java.util.*;
-public class loan 
-{
-    Scanner sc = new Scanner(System.in);
-    String username, pass;
+public class loan {
+Scanner sc = new Scanner(System.in);
+String username, pass;
     public loan() 
     {
         try {
             System.out.println("\t\t=======================================================");
-            System.out.println("\t\t\tWELCOME TO COUNTER 4 ");
+            System.out.println("\t\t\t\tWELCOME TO COUNTER 4");
             System.out.println("\t\tPLEASE LOGIN TO ACCESS LOAN FACILITIES");
             while (true) {
                 System.out.print("\t\t\tUsername: ");
@@ -48,7 +47,7 @@ public class loan
                                 LoanItem newLoan = takeLoan(balance);
                                 balance += newLoan.amount;
                                 loans.add(newLoan);
-                                System.out.println("\t\tLOAN OF ₹" + newLoan.amount + " GRANTED SUCCESSFULLY!");
+                                System.out.println("\t\tLOAN OF " + newLoan.amount +"Rs GRANTED SUCCESSFULLY!");
                                 System.out.println("\t\tUPDATED SUCCESSFULLY: " + balance);
                             }
                             case 2 -> { // Pay Interest
@@ -94,12 +93,12 @@ public class loan
         String[] lines = data.split("\n");
         LoanItem temp = null;
         for (String line : lines) {
-            if (line.trim().startsWith("LOAN AMOUNT:")) {
+            if (line.contains("LOAN AMOUNT:")) {
                 double amt = Double.parseDouble(line.split(":")[1].trim());
                 temp = new LoanItem(amt, 12.0, "", ""); // default 12%
-            } else if (line.trim().startsWith("LOAN ISSUED DATE:") && temp != null) {
+            } else if (line.contains("LOAN ISSUED DATE:") && temp != null) {
                 temp.loanDate = line.split(":")[1].trim();
-            } else if (line.trim().startsWith("LAST INTEREST PAID ON") && temp != null) {
+            } else if (line.contains("LAST INTEREST PAID ON") && temp != null) {
                 temp.lastPaidMonth = line.split(":")[1].trim();
                 loans.add(temp);
                 temp = null;
@@ -110,7 +109,7 @@ public class loan
     public double parseBalance(String data) {
         double balance = 0.0;
         for (String line : data.split("\n")) {
-            if (line.trim().startsWith("BALANCE:")) {
+            if (line.contains("BALANCE:")) {
                 balance = Double.parseDouble(line.split(":")[1].trim());
             }
         }
@@ -136,9 +135,9 @@ public class loan
     String month = new java.text.SimpleDateFormat("MM-yyyy").format(new Date());
     double rate = 10.0; // default 10% per annum
     double monthlyInterest = amt * (rate / 100) / 12;
-    System.out.println("\t\tLOAN OF ₹" + amt + " GRANTED SUCCESSFULLY!");
-    System.out.println("\t\tINTEREST RATE: " + rate + "% per annum");
-    System.out.println("\t\tYOUR MONTHLY INTEREST WILL BE: ₹" + monthlyInterest);
+    System.out.println("\t\tLOAN OF " + amt +"Rs GRANTED SUCCESSFULLY!");
+    System.out.println("\t\tINTEREST RATE: " + rate + "% PER ANNUM");
+    System.out.println("\t\tYOUR MONTHLY INTEREST WILL BE: " + monthlyInterest+"Rs");
     return new LoanItem(amt, rate, date, month);
 }
     public double payInterest(double balance, List<LoanItem> loans) {
@@ -149,7 +148,7 @@ public class loan
     System.out.println("\t\tYOUR LOANS");
     for (int i = 0; i < loans.size(); i++) {
         LoanItem l = loans.get(i);
-        System.out.printf("\t\t%d. LOAN ₹%.2f, RATE %.2f%%,LOAN ISSUED DATE: %s%n",
+        System.out.printf("\t\t%d. LOAN %.2fRs,INTEREST RATE %.2f%%,LOAN ISSUED DATE: %s%n",
                 i + 1, l.amount, l.rate, l.loanDate);
     }
     System.out.print("\t\tFOR WHICH LOAN YOU WANT TO PAY THE INTEREST ? ");
@@ -178,7 +177,7 @@ public class loan
         }
         double monthlyInterest = l.amount * (l.rate / 100) / 12;
         double totalInterest = monthsDue * monthlyInterest;
-        System.out.println("\t\tINTEREST DUE FOR " + monthsDue + " MONTH(S): ₹" + totalInterest);
+        System.out.println("\t\tINTEREST DUE FOR " + monthsDue + " MONTH(S): " + totalInterest+"Rs");
         System.out.print("\t\tDO YOU WANT TO PAY IT NOW? (yes/no): ");
         String ans = sc.nextLine();
         if (ans.equalsIgnoreCase("yes")) {
@@ -206,7 +205,7 @@ public class loan
         System.out.println("\t\tYOUR LOANS");
         for (int i = 0; i < loans.size(); i++) {
             LoanItem l = loans.get(i);
-            System.out.printf("\t\t%d. LOAN ₹%.2f,INTEREST RATE %.2f%%,LOAN ISSUED DATE: %s%n", i + 1, l.amount, l.rate, l.loanDate);
+            System.out.printf("\t\t%d. LOAN %.2fRs,INTEREST RATE %.2f%%,LOAN ISSUED DATE: %s%n", i + 1, l.amount, l.rate, l.loanDate);
         }
         System.out.print("\t\tWHICH LOAN YOU WANT TO CLEAR? ");
         int choice = sc.nextInt() - 1;
@@ -237,7 +236,7 @@ public class loan
     java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MM-yyyy");
     for (int i = 0; i < loans.size(); i++) {
         LoanItem l = loans.get(i);
-        System.out.printf("\t\tLOAN %d: ₹%.2f, INTEREST RATE %.2f%%,LOAN ISSUED DATE: %s, LAST INTEREST PAID ON %s%n",
+        System.out.printf("\t\tLOAN %d: %.2fRs,\n\t\tINTEREST RATE %.2f%%,\n\t\tLOAN ISSUED DATE: %s,\n\t\tLAST INTEREST PAID ON %s%n",
                 i + 1, l.amount, l.rate, l.loanDate,
                 (l.lastPaidMonth == null || l.lastPaidMonth.isEmpty()) ? "NEVER" : l.lastPaidMonth);
         try {
@@ -253,30 +252,50 @@ public class loan
             if (monthsDue > 0) {
                 double monthlyInterest = l.amount * (l.rate / 100) / 12;
                 double totalDue = monthsDue * monthlyInterest;
-                System.out.println("\t\tPENDING STATUS: INTEREST DUE FOR " + monthsDue + " MONTH(S) → ₹" + totalDue);
+                System.out.println("\t\tPENDING STATUS: INTEREST DUE FOR " + monthsDue + " MONTH(S) → " + totalDue+"Rs");
             } else {
                 System.out.println("\t\tPENDING STATUS: NO DUES FOR THIS MONTH");
             }
         } catch (Exception e) {
             System.out.println("\t\tERROR CALCULATING DUES!");
         }
-        System.out.println("---------------------------------------------------");
+        System.out.println("\t\t---------------------------------------------------");
     }
 }
-    public void saveAccount(File file, double balance, List<LoanItem> loans) throws IOException, Exception {
-        List<String> data = new ArrayList<>();
-        data.add("BALANCE: " + balance);
-        for (LoanItem l : loans) {
-            data.add("LOAN AMOUNT: " + l.amount);
-            data.add("LOAN ISSUED DATE: " + l.loanDate);
-            data.add("LAST INTEREST PAID ON " + l.lastPaidMonth);
-        }
-        String updatedData = String.join("\n", data);
-        byte[] encrypted = create.encrypt(updatedData, pass);
-        FileOutputStream fos = new FileOutputStream(file);
-        fos.write(encrypted);
-        fos.close();
+   public void saveAccount(File file, double balance, List<LoanItem> loans) throws Exception {
+    // Decrypt old data to keep user details
+    byte[] encryptedData = new byte[(int) file.length()];
+    FileInputStream fis = new FileInputStream(file);
+    fis.read(encryptedData);
+    fis.close();
+    String decryptedData = create.decrypt(encryptedData, pass);
+    String name = "", aadhar = "", address = "";
+    int age = 0;
+    for (String line : decryptedData.split("\n")) {
+        line = line.trim();
+        if (line.contains("NAME:")) name = line.split(":", 2)[1].trim();
+        else if (line.contains("AADHAR NO:")) aadhar = line.split(":", 2)[1].trim();
+        else if (line.contains("AGE:")) age = Integer.parseInt(line.split(":", 2)[1].trim());
+        else if (line.contains("ADDRESS:")) address = line.split(":", 2)[1].trim();
     }
+    // Rebuild file with full details + loan info
+    List<String> data = new ArrayList<>();
+    data.add("NAME: " + name);
+    data.add("AGE: " + age);
+    data.add("AADHAR NO: " + aadhar);
+    data.add("ADDRESS: " + address);
+    data.add("BALANCE: " + balance);
+    for (LoanItem l : loans) {
+        data.add("LOAN AMOUNT: " + l.amount);
+        data.add("LOAN ISSUED DATE: " + l.loanDate);
+        data.add("LAST INTEREST PAID ON " + l.lastPaidMonth);
+    }
+    String updatedData = String.join("\n", data);
+    byte[] encrypted = create.encrypt(updatedData, pass);
+    FileOutputStream fos = new FileOutputStream(file);
+    fos.write(encrypted);
+    fos.close();
+}
     public double recalcBalance(double balance, List<LoanItem> loans) {
         // interest is not deducted automatically
         return balance;

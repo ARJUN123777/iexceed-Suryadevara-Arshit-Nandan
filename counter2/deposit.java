@@ -18,7 +18,6 @@ public class deposit
                         this.username = sc.nextLine();
                         System.out.print("\t\t\tPassword: ");
                         this.pass = sc.nextLine();
-
                        File file = new File(username + ".txt");
                if (!file.exists()) {
                 System.out.println("\t\t\t\tUSER NOT FOUND");
@@ -32,17 +31,34 @@ public class deposit
              try {
                 // Decrypt account data using password
                 String decryptedData = create.decrypt(encryptedData, pass);
+                String name = "", aadhar = "", address = "";
+                int age = 0;
+                double balance = 0.0;
                 System.out.println("\t\t******************************************************");
                 System.out.println("\t\t\t\tACCOUNT DETAILS");
                 String[] lines = decryptedData.split("\n");
-                double balance = 0.0;
+                balance = 0.0;
                 // Print account details and extract balance
-                for (String line : lines) {
-                    System.out.println(line);
-                    if (line.trim().startsWith("BALANCE:")) {
-                        balance = Double.parseDouble(line.split(":")[1].trim());
-                    }
+                for (String line : lines) 
+                {
+                    if (line.trim().startsWith("NAME:")) {
+                            name = line.split(":", 2)[1].trim();
+                        } else if (line.trim().startsWith("AADHAR NO:")) {
+                            aadhar = line.split(":", 2)[1].trim();
+                        } else if (line.trim().startsWith("AGE:")) {
+                            age = Integer.parseInt(line.split(":", 2)[1].trim());
+                        } else if (line.trim().startsWith("ADDRESS:")) {
+                            address = line.split(":", 2)[1].trim();
+                        } else if (line.trim().startsWith("BALANCE:")) {
+                            balance = Double.parseDouble(line.split(":", 2)[1].trim());
+                        }
                 }
+                // Show account details before transaction
+                    System.out.println("\t\tName      : " + name);
+                    System.out.println("\t\tAge       : " + age);
+                    System.out.println("\t\tAadhar No : " + aadhar);
+                    System.out.println("\t\tAddress   : " + address);
+                    System.out.println("\t\tBalance   : " + balance);
                 // Deposit or Withdraw
                 String choice="";
                 while (true) 
@@ -76,7 +92,7 @@ public class deposit
                 // Update Balance line
                 for(int i = 0; i < lines.length; i++) {
                     if (lines[i].trim().startsWith("BALANCE")) {
-                        lines[i] = "\t\tBALANCE: " + balance;
+                        lines[i] = "BALANCE: " + balance;
                     }
                 }
                 // Rejoin lines and encrypt again
@@ -89,7 +105,12 @@ public class deposit
                 // Show updated account details
                 System.out.println("\t\t******************************************************");
                 System.out.println("\t\t\t\tUPDATED ACCOUNT DETAILS");
-                System.out.println(updatedData);
+                System.out.println("\t\tName      : " + name);
+                System.out.println("\t\tAge       : " + age);
+                System.out.println("\t\tAadhar No : " + aadhar);
+                System.out.println("\t\tAddress   : " + address);
+                System.out.println("\t\tBalance   : " + balance);
+
                 break;
              } catch (Exception e) {
                 System.out.println("\t\t\tINCORRECT PASSWORD!");

@@ -66,7 +66,7 @@ public class fixeddeposit {
         List<String> updated = new ArrayList<>();
         // extract balance
         for (String line : lines) {
-            if (line.startsWith("BALANCE:")) {
+            if (line.contains("BALANCE:")) {
                 balance = Double.parseDouble(line.split(":")[1].trim());
             }
         }
@@ -75,19 +75,19 @@ public class fixeddeposit {
         Date now = new Date();
         for (int i = 0; i < lines.length; i++) {
             updated.add(lines[i]);
-            if (lines[i].startsWith("FIXED DEPOSIT:")) {
+            if (lines[i].contains("FIXED DEPOSIT:")) {
                 double fdAmount = Double.parseDouble(lines[i].split(" ")[2]);
                 double rate = Double.parseDouble(lines[i].split("@")[1].replace("%", "").trim());
                 // Find LAST INTEREST CREDIT line
                 String lastCreditLine = "";
                 int lastCreditIndex = -1;
                 for (int j = i; j < lines.length; j++) {
-                    if (lines[j].startsWith("LAST INTEREST CREDITED ON:")) {
+                    if (lines[j].contains("LAST INTEREST CREDITED ON:")) {
                         lastCreditLine = lines[j];
                         lastCreditIndex = j;
                         break;
                     }
-                    if (lines[j].startsWith("DATE OF ISSUE:")) {
+                    if (lines[j].contains("DATE OF ISSUE:")) {
                         lastCreditLine = "LAST INTEREST CREDITED ON: " + lines[j].split(":")[1].trim();
                         lastCreditIndex = -1;
                         break;
@@ -121,7 +121,7 @@ public class fixeddeposit {
         // update balance in file
         if (credited) {
             for (int j = 0; j < updated.size(); j++) {
-                if (updated.get(j).startsWith("BALANCE:")) {
+                if (updated.get(j).contains("BALANCE:")) {
                     updated.set(j, "BALANCE: " + balance);
                 }
             }
@@ -139,9 +139,8 @@ public class fixeddeposit {
     public void createFD(File file, String decryptedData) throws Exception {
         String[] lines = decryptedData.split("\n");
         double balance = 0.0;
-
         for (String line : lines) {
-            if (line.startsWith("BALANCE:")) {
+            if (line.contains("BALANCE:")) {
                 balance = Double.parseDouble(line.split(":")[1].trim());
             }
         }
@@ -161,7 +160,7 @@ public class fixeddeposit {
         // Update account
         List<String> updated = new ArrayList<>();
         for (String line : lines) {
-            if (line.startsWith("BALANCE:")) {
+            if (line.contains("BALANCE:")) {
                 updated.add("BALANCE: " + balance);
             } else {
                 updated.add(line);
@@ -193,17 +192,17 @@ public class fixeddeposit {
         boolean found = false;
         int fdCount = 1;
         for (int i = 0; i < lines.length; i++) {
-            if (lines[i].startsWith("FIXED DEPOSIT:")) {
+            if (lines[i].contains("FIXED DEPOSIT:")) {
                 found = true;
                 System.out.println("\n\t\tFD " + fdCount++);
                 System.out.println("\t\t" + lines[i]);
-                if (i + 1 < lines.length && lines[i + 1].startsWith("MATURITY VALUE")) {
+                if (i + 1 < lines.length && lines[i + 1].contains("MATURITY VALUE")) {
                     System.out.println("\t\t" + lines[i + 1]);
                 }
-                if (i + 2 < lines.length && lines[i + 2].startsWith("DATE OF ISSUE")) {
+                if (i + 2 < lines.length && lines[i + 2].contains("DATE OF ISSUE")) {
                     System.out.println("\t\t" + lines[i + 2]);
                 }
-                if (i + 3 < lines.length && lines[i + 3].startsWith("LAST INTEREST CREDITED ON")) {
+                if (i + 3 < lines.length && lines[i + 3].contains("LAST INTEREST CREDITED ON")) {
                     System.out.println("\t\t" + lines[i + 3]);
                 }
                 System.out.println("\t\t--------------------------------------------");
@@ -225,8 +224,8 @@ public class fixeddeposit {
     public void generateBond(String accountHolder, double fdAmount, int years, double rate, double maturity)
             throws IOException {
         String date = new java.text.SimpleDateFormat("dd-MM-yyyy").format(new java.util.Date());
-        System.out.println("\n\t\t=============================================================");
-        System.out.println("\t\tMAGADHA BANK FIXED DEPOSIT BOND");
+        System.out.println("\n\t\t==========================================================");
+        System.out.println("\t\t\tMAGADHA BANK FIXED DEPOSIT BOND");
         System.out.println("*\t\t************************************************************");
         System.out.println("\t\tAccount Holder : " + accountHolder);
         System.out.println("\t\tAadhar No      : " + aadharMasked(this.username));
@@ -235,9 +234,9 @@ public class fixeddeposit {
         System.out.println("\t\tInterest Rate  : " + rate + "% (compounded annually)");
         System.out.println("\t\tMaturity Value : " + String.format("%.2f", maturity) + " Rs");
         System.out.println("\t\tDate of Issue  : " + date);
-        System.out.println("\t=====================================================");
-        System.out.println("\t\tTHANK YOU FOR TRUSTING MAGADHA BANK");
-        System.out.println("\t=====================================================");
+        System.out.println("\t\t=====================================================");
+        System.out.println("\t\t\tTHANK YOU FOR TRUSTING MAGADHA BANK");
+        System.out.println("\t\t=====================================================");
     }
     public String aadharMasked(String username) {
         return "XXXXXX" + username;

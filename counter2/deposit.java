@@ -41,15 +41,15 @@ public class deposit
                 // Print account details and extract balance
                 for (String line : lines) 
                 {
-                    if (line.trim().startsWith("NAME:")) {
+                           if (line.contains("NAME:")) {
                             name = line.split(":", 2)[1].trim();
-                        } else if (line.trim().startsWith("AADHAR NO:")) {
+                        } else if (line.contains("AADHAR NO:")) {
                             aadhar = line.split(":", 2)[1].trim();
-                        } else if (line.trim().startsWith("AGE:")) {
+                        } else if (line.contains("AGE:")) {
                             age = Integer.parseInt(line.split(":", 2)[1].trim());
-                        } else if (line.trim().startsWith("ADDRESS:")) {
+                        } else if (line.contains("ADDRESS:")) {
                             address = line.split(":", 2)[1].trim();
-                        } else if (line.trim().startsWith("BALANCE:")) {
+                        } else if (line.contains("BALANCE:")) {
                             balance = Double.parseDouble(line.split(":", 2)[1].trim());
                         }
                 }
@@ -91,7 +91,7 @@ public class deposit
             }
                 // Update Balance line
                 for(int i = 0; i < lines.length; i++) {
-                    if (lines[i].trim().startsWith("BALANCE")) {
+                    if (lines[i].contains("BALANCE")) {
                         lines[i] = "BALANCE: " + balance;
                     }
                 }
@@ -114,6 +114,7 @@ public class deposit
                 break;
              } catch (Exception e) {
                 System.out.println("\t\t\tINCORRECT PASSWORD!");
+                continue;
             }
         }
         } catch (Exception e) {

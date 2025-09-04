@@ -59,82 +59,78 @@ public class fixeddeposit {
             e.printStackTrace();
         }
     }
-    // Auto-credit FD interest (monthly)
-    public String autoCreditInterest(File file, String decryptedData) throws Exception {
-        String[] lines = decryptedData.split("\n");
-        double balance = 0.0;
-        List<String> updated = new ArrayList<>();
-        // extract balance
-        for (String line : lines) {
-            if (line.contains("BALANCE:")) {
-                balance = Double.parseDouble(line.split(":")[1].trim());
-            }
+   // Auto-credit FD interest (monthly)
+public String autoCreditInterest(File file, String decryptedData) throws Exception {
+    String[] lines = decryptedData.split("\n");
+    double balance = 0.0;
+    for (String line : lines) {
+        if (line.contains("BALANCE:")) {
+            balance = Double.parseDouble(line.split(":")[1].trim());
         }
-        boolean credited = false;
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd-MM-yyyy");
-        Date now = new Date();
-        for (int i = 0; i < lines.length; i++) {
-            updated.add(lines[i]);
-            if (lines[i].contains("FIXED DEPOSIT:")) {
-                double fdAmount = Double.parseDouble(lines[i].split(" ")[2]);
-                double rate = Double.parseDouble(lines[i].split("@")[1].replace("%", "").trim());
-                // Find LAST INTEREST CREDIT line
-                String lastCreditLine = "";
-                int lastCreditIndex = -1;
-                for (int j = i; j < lines.length; j++) {
-                    if (lines[j].contains("LAST INTEREST CREDITED ON:")) {
-                        lastCreditLine = lines[j];
-                        lastCreditIndex = j;
-                        break;
-                    }
-                    if (lines[j].contains("DATE OF ISSUE:")) {
-                        lastCreditLine = "LAST INTEREST CREDITED ON: " + lines[j].split(":")[1].trim();
-                        lastCreditIndex = -1;
-                        break;
-                    }
-                }
-                Date lastCreditDate = sdf.parse(lastCreditLine.split(":")[1].trim());
-                // Calculate months difference
-                Calendar c1 = Calendar.getInstance();
-                Calendar c2 = Calendar.getInstance();
-                c1.setTime(lastCreditDate);
-                c2.setTime(now);
-                int monthsDiff = (c2.get(Calendar.YEAR) - c1.get(Calendar.YEAR)) * 12 +
-                                 (c2.get(Calendar.MONTH) - c1.get(Calendar.MONTH));
-                if (monthsDiff > 0) {
-                    double monthlyRate = rate / 12 / 100;
-                    double interest = fdAmount * monthlyRate * monthsDiff;
-                    balance += interest;
-                    credited = true;
-                    updated.add("INTEREST CREDITED: ₹" + String.format("%.2f", interest) +
-                                " (" + monthsDiff + " MONTHS)");
-                    // update last credit date
-                    String newLastCredit = "LAST INTEREST CREDITED ON: " + sdf.format(now);
-                    if (lastCreditIndex != -1) {
-                        updated.set(lastCreditIndex, newLastCredit);
-                    } else {
-                        updated.add(newLastCredit);
-                    }
-                }
-            }
-        }
-        // update balance in file
-        if (credited) {
-            for (int j = 0; j < updated.size(); j++) {
-                if (updated.get(j).contains("BALANCE:")) {
-                    updated.set(j, "BALANCE: " + balance);
-                }
-            }
-            String updatedData = String.join("\n", updated);
-            byte[] updatedEncrypted = create.encrypt(updatedData, pass);
-            FileOutputStream fos = new FileOutputStream(file);
-            fos.write(updatedEncrypted);
-            fos.close();
-            System.out.println("\n\t\tMONTHLY FD INTEREST CREDITED!\n\t\tUPDATED BALANCE: " + balance);
-            return updatedData;
-        }
-        return decryptedData;
     }
+    List<String> updated = new ArrayList<>(Arrays.asList(lines));
+    boolean credited = false;
+    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd-MM-yyyy");
+    Date now = new Date();
+    Calendar c2 = Calendar.getInstance();
+    c2.setTime(now);
+    for (int i = 0; i < lines.length; i++) {
+        if (lines[i].contains("FIXED DEPOSIT:")) {
+            double fdAmount = Double.parseDouble(lines[i].split(" ")[2]);
+            double rate = Double.parseDouble(lines[i].split("@")[1].replace("%", "").trim());
+            // find last interest credit date
+            String lastCreditDateStr = null;
+            int lastCreditIndex = -1;
+            for (int j = i; j < lines.length; j++) {
+                if (lines[j].contains("LAST INTEREST CREDITED ON:")) {
+                    lastCreditDateStr = lines[j].split(":", 2)[1].trim();
+                    lastCreditIndex = j;
+                    break;
+                }
+            }
+            if (lastCreditDateStr == null) continue;
+            Date lastCreditDate = sdf.parse(lastCreditDateStr);
+            Calendar c1 = Calendar.getInstance();
+            c1.setTime(lastCreditDate);
+            int monthsDiff = (c2.get(Calendar.YEAR) - c1.get(Calendar.YEAR)) * 12 +
+                             (c2.get(Calendar.MONTH) - c1.get(Calendar.MONTH));
+            if (monthsDiff > 0) {
+                double monthlyRate = rate / 12 / 100;
+                double interest = fdAmount * monthlyRate * monthsDiff;
+                balance += interest;
+                credited = true;
+                // add/update interest line
+                updated.add("INTEREST CREDITED: ₹" + String.format("%.2f", interest) +
+                            " (" + monthsDiff + " MONTHS)");
+
+                // update last credit date
+                String newLastCredit = "LAST INTEREST CREDITED ON: " + sdf.format(now);
+                if (lastCreditIndex != -1) {
+                    updated.set(lastCreditIndex, newLastCredit);
+                } else {
+                    updated.add(newLastCredit);
+                }
+            }
+        }
+    }
+    // save back only if credited
+    if (credited) {
+        for (int j = 0; j < updated.size(); j++) {
+            if (updated.get(j).contains("BALANCE:")) {
+                updated.set(j, "BALANCE: " + balance);
+            }
+        }
+        String updatedData = String.join("\n", updated);
+        byte[] updatedEncrypted = create.encrypt(updatedData, pass);
+        FileOutputStream fos = new FileOutputStream(file);
+        fos.write(updatedEncrypted);
+        fos.close();
+        System.out.println("\n\t\tMONTHLY FD INTEREST CREDITED!\n\t\tUPDATED BALANCE: " + balance);
+        return updatedData;
+    }
+    // return original data if no interest credited
+    return decryptedData;
+}
     // Create new FD
     public void createFD(File file, String decryptedData) throws Exception {
         String[] lines = decryptedData.split("\n");
@@ -187,7 +183,7 @@ public class fixeddeposit {
     }
     // View all FDs
     public void viewFDs(String decryptedData) {
-        System.out.println("\n\t\t\t YOUR FIXED DEPOSITS ");
+        System.out.println("\n\t\t\t ================ YOUR FIXED DEPOSITS ================");
         String[] lines = decryptedData.split("\n");
         boolean found = false;
         int fdCount = 1;
@@ -205,7 +201,7 @@ public class fixeddeposit {
                 if (i + 3 < lines.length && lines[i + 3].contains("LAST INTEREST CREDITED ON")) {
                     System.out.println("\t\t" + lines[i + 3]);
                 }
-                System.out.println("\t\t--------------------------------------------");
+                System.out.println("\t\t-------------------------------------------------");
             }
         }
         if (!found) {

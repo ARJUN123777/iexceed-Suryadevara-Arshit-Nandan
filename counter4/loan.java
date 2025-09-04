@@ -2,14 +2,15 @@ package counter4;
 import counter1.*;
 import java.io.*;
 import java.util.*;
-public class loan {
+public class loan 
+{
     Scanner sc = new Scanner(System.in);
     String username, pass;
     public loan() 
     {
         try {
             System.out.println("\t\t=======================================================");
-            System.out.println("\t\t\tWELCOME TO COUNTER 4 - LOAN SERVICES");
+            System.out.println("\t\t\tWELCOME TO COUNTER 4 ");
             System.out.println("\t\tPLEASE LOGIN TO ACCESS LOAN FACILITIES");
             while (true) {
                 System.out.print("\t\t\tUsername: ");
@@ -93,12 +94,12 @@ public class loan {
         String[] lines = data.split("\n");
         LoanItem temp = null;
         for (String line : lines) {
-            if (line.startsWith("LOAN AMOUNT:")) {
+            if (line.trim().startsWith("LOAN AMOUNT:")) {
                 double amt = Double.parseDouble(line.split(":")[1].trim());
                 temp = new LoanItem(amt, 12.0, "", ""); // default 12%
-            } else if (line.startsWith("LOAN ISSUED DATE:") && temp != null) {
+            } else if (line.trim().startsWith("LOAN ISSUED DATE:") && temp != null) {
                 temp.loanDate = line.split(":")[1].trim();
-            } else if (line.startsWith("LAST INTEREST PAID ON") && temp != null) {
+            } else if (line.trim().startsWith("LAST INTEREST PAID ON") && temp != null) {
                 temp.lastPaidMonth = line.split(":")[1].trim();
                 loans.add(temp);
                 temp = null;
@@ -109,7 +110,7 @@ public class loan {
     public double parseBalance(String data) {
         double balance = 0.0;
         for (String line : data.split("\n")) {
-            if (line.startsWith("BALANCE:")) {
+            if (line.trim().startsWith("BALANCE:")) {
                 balance = Double.parseDouble(line.split(":")[1].trim());
             }
         }
@@ -138,7 +139,6 @@ public class loan {
     System.out.println("\t\tLOAN OF ₹" + amt + " GRANTED SUCCESSFULLY!");
     System.out.println("\t\tINTEREST RATE: " + rate + "% per annum");
     System.out.println("\t\tYOUR MONTHLY INTEREST WILL BE: ₹" + monthlyInterest);
-
     return new LoanItem(amt, rate, date, month);
 }
     public double payInterest(double balance, List<LoanItem> loans) {

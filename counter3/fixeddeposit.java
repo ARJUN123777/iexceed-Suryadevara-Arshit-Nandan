@@ -224,7 +224,7 @@ public String autoCreditInterest(File file, String decryptedData) throws Excepti
         System.out.println("\t\t\tMAGADHA BANK FIXED DEPOSIT BOND");
         System.out.println("*\t\t************************************************************");
         System.out.println("\t\tAccount Holder : " + accountHolder);
-        System.out.println("\t\tAadhar No      : " + aadharMasked(this.username));
+        System.out.println("\t\tAadhar No      : " + "XXXXXX" + this.username);
         System.out.println("\t\tFD Amount      : " + fdAmount + " Rs");
         System.out.println("\t\tDuration       : " + years + " years");
         System.out.println("\t\tInterest Rate  : " + rate + "% (compounded annually)");
@@ -233,8 +233,5 @@ public String autoCreditInterest(File file, String decryptedData) throws Excepti
         System.out.println("\t\t=====================================================");
         System.out.println("\t\t\tTHANK YOU FOR TRUSTING MAGADHA BANK");
         System.out.println("\t\t=====================================================");
-    }
-    public String aadharMasked(String username) {
-        return "XXXXXX" + username;
     }
 }
